@@ -1,57 +1,33 @@
 class Solution {
 public:
     bool wordPattern(string pattern, string s) {
-        unordered_map<char,string> mpa;
-        unordered_map<string,char> mpb;
-        int n = s.size();
-        int i=0;
-        int j=0;
-        int k=0;
-        int nwords=0;
-        while(j<n){
-            if(s[j]==' '){
-                string word= s.substr(i,j-i);
-                if(mpa.find(pattern[k])!=mpa.end()){
-                    if(mpa[pattern[k]]!=word)return false;
-                }else{
-                    mpa[pattern[k]]=word;
-                }
-                if(mpb.find(word)!=mpb.end()){
-                    if(mpb[word]!=pattern[k])return false;
-                }else{
-                    mpb[word]=pattern[k];
-                }
-                i=j+1;
-                j=j+1;
-                k++;
-                nwords++;
-                
-            }else{
-                j++;
-                if(j==n){
-                    string word= s.substr(i,j-i);
-                    if(mpa.find(pattern[k])!=mpa.end()){
-                    if(mpa[pattern[k]]!=word)return false;
-                }else{
-                    mpa[pattern[k]]=word;
-                }
-                if(mpb.find(word)!=mpb.end()){
-                    if(mpb[word]!=pattern[k])return false;
-                }else{
-                    mpb[word]=pattern[k];
-                }
-                    nwords++;
-                }
+        istringstream newS (s);
+        vector<string> words;
+        unordered_map<char, string> pS;
+        unordered_map<string, char> sP;
+        
+
+        while (newS >> s) {
+            words.push_back(s);
+        }
+
+        if (pattern.size() != words.size()) {
+            return false;
+        }
+
+        int size = pattern.size();
+        for (int i = 0; i < size; i++) {
+            char c1 = pattern[i];
+            string c2 = words[i];
+
+            if ((pS.find(c1) != pS.end() && pS[c1] != c2) ||
+                (sP.find(c2) != sP.end() && sP[c2] != c1)) {
+                return false;
             }
+
+            pS[c1] = c2;
+            sP[c2] = c1;
         }
-        for(auto it : mpa){
-            cout<<it.first<<" "<<it.second<<endl;
-        }
-        for(auto it : mpb){
-            cout<<it.first<<" "<<it.second<<endl;
-        }
-        cout<<endl;
-        if(nwords!=pattern.size())return false;
         return true;
         
     }
