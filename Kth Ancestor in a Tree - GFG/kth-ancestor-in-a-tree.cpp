@@ -111,52 +111,38 @@ struct Node
 };
 */
 // your task is to complete this function
-Node* solve(Node* root, int &k, int node) {
-    //base case
-    if(root == NULL)
+Node* solve(Node* root, int &k, int node){
+    if(root==NULL){
         return NULL;
-
-    if(root->data == node) 
-    {
+    }
+    if(root->data==node){
         return root;
     }
-
-    Node* leftAns = solve(root->left, k, node);
-    Node* rightAns = solve(root->right, k, node);
-
-
-    //wapas
-    if(leftAns != NULL && rightAns == NULL) 
-    {
+    Node* lft =solve(root->left,k,node);
+    Node* rght =solve(root->right,k,node);
+    if(lft!=NULL&& rght==NULL){
         k--;
-        if(k<=0) 
-        {
-            //answer lock
-            k = INT_MAX;
+        if(k<=0){
+            k=INT_MAX;
             return root;
         }
-        return leftAns;
+        return lft;
     }
-
-    if(leftAns == NULL && rightAns != NULL) {
+    if(lft==NULL&& rght!=NULL){
         k--;
-        if(k<=0) 
-        {
-            //answer lock
-            k = INT_MAX;
+        if(k<=0){
+            k=INT_MAX;
             return root;
         }
-        return rightAns;
+        return rght;
     }
     return NULL;
-
-
 }
+
 int kthAncestor(Node *root, int k, int node)
 {
-    Node* ans = solve(root, k, node);
-    if(ans == NULL || ans->data == node)
-        return -1;
-    else
-        return ans->data;
+    // Code here
+    Node* ans =solve(root,k,node);
+    if(ans==NULL||ans->data==node)return -1;
+    return ans->data;
 }
